@@ -3,6 +3,7 @@ const TRANSITION_MATRIX: [[f32; 3]; 3] = [
     [0.8, 0.2, 0.05],
     [0.05, 0.75, 0.05],
     [0.15, 0.05, 0.9]];
+    
 fn main() {
     print_initial_state();
 
