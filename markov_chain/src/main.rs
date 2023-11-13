@@ -20,7 +20,6 @@ fn print_state(state: [f32; 3]) {
 }
 
 fn print_initial_state() {
-    println!();
     println!("🦀====initial state====🦀");
     println!("");
 
