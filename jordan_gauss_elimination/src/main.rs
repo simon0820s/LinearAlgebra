@@ -1,30 +1,61 @@
 use std::io;
+
 fn main() {
     println!();
     println!("🦀===Please enter the size of your square matrix===🦀");
+    let size: usize = input_to_u64();
+    let a_matrix = create_augmented_matrix(size);
+    println!("printing");
+    print_matrix(size, a_matrix)
+}
 
-    let mut input = String::new();
+fn input_to_u64() -> usize {
+    let mut input: String = String::new();
 
     io::stdin()
         .read_line(&mut input)
         .expect("Error at read input");
 
-    let size: u64 = match input.trim().parse() {
+    let size: usize = match input.trim().parse() {
         Ok(value) => value,
+
         Err(_) => {
             println!("Please only enter a valid u64");
-            return ;
+            return 0;
         }
     };
-
-    create_augmented_matrix(size);
-
+    size
 }
 
-fn create_augmented_matrix(size: u64) {
+fn print_matrix(size: usize, matrix: Vec<Vec<usize>>) {
+    for row in 0..size {
+        for column in 1..size+1{
+            println!("{}", matrix[row][column])
+        }
+    }
+}
+
+fn create_augmented_matrix(size: usize) -> Vec<Vec<usize>> {
     println!();
-    println!("🦀====Please enter the coefficients of your matrix====🦀");
+    println!("{size}====Please enter the coefficients of your matrix===={size}");
     println!();
-    println!("First row:");
-    println!("Size: {}", size)
+
+    let mut augmented_matrix = vec![vec![0; size+1]; size];
+
+    for row in 0..size {
+
+        println!("Row: {}", row+1);
+
+        for column in 0..size {
+            println!("Please enter your component: ({},{}) ", row+1, column+1);
+            println!("({},{})", row, column);
+            let component = input_to_u64();
+            augmented_matrix[row][column] = component;
+        }
+
+        println!("Please enter the constant of your row: {}", row+1);
+        augmented_matrix[row][size] = input_to_u64();
+    }
+    
+    augmented_matrix
 }
