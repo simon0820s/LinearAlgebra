@@ -2,9 +2,9 @@ use std::io;
 
 fn main() {
     let mut initial_matrix: Vec<Vec<f64>> = vec![
-        vec![1.0, 2.0, 3.0, 20.0],
-        vec![2.0, 3.0, 4.0, 15.0],
         vec![1.0, 1.0, 2.0, 5.0],
+        vec![1.0, 2.0, 3.0, 20.0],
+        vec![2.0, 4.0, 5.0, 15.0],
     ];
 
 //    println!();
@@ -15,7 +15,8 @@ fn main() {
 
 //    print_matrix(size, a_matrix);
 
-    let result = gaussian_elimination(initial_matrix);
+    let solution = gaussian_elimination(initial_matrix);
+    println!("{:?}", solution)
 }
 
 fn get_size() -> usize {
@@ -87,25 +88,5 @@ fn create_augmented_matrix(size: usize) -> Vec<Vec<f64>> {
 }
 
 fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
-    let n: usize = matrix.len();
 
-    for i in 0..n {
-        // Find the maximum element in the column
-
-        let mut max_row = i;
-
-        for j in i + 1..n {
-            if matrix[j][i] > matrix[max_row][i] {
-                max_row = j;
-            }
-        }
-
-        //Swap rows if necessary to avoid zero divisions
-        if max_row != i {
-            matrix.swap(i, max_row);
-        }
-
-        //Make zeros under the current element
-        for j in i + 1..n {}
-    }
 }
