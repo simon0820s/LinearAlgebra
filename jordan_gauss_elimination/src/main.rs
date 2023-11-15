@@ -1,15 +1,24 @@
 use std::io;
 
 fn main() {
-    println!();
-    println!("🦀===Please enter the size of your square matrix===🦀");
-    let size: usize = input_to_u64();
-    let a_matrix = create_augmented_matrix(size);
-    println!("This is your matrix 🦀");
-    print_matrix(size, a_matrix)
+    let mut initial_matrix: Vec<Vec<f64>> = vec![
+        vec![1.0, 2.0, 3.0, 20.0],
+        vec![2.0, 3.0, 4.0, 15.0],
+        vec![1.0, 1.0, 2.0, 5.0],
+    ];
+
+//    println!();
+//    println!("🦀===Please enter the size of your square matrix===🦀");
+//
+//    let size: usize = get_size();
+//    let mut a_matrix = create_augmented_matrix(size);
+
+//    print_matrix(size, a_matrix);
+
+    let result = gaussian_elimination(initial_matrix);
 }
 
-fn input_to_u64() -> usize {
+fn get_size() -> usize {
     let mut input: String = String::new();
 
     io::stdin()
@@ -27,36 +36,76 @@ fn input_to_u64() -> usize {
     size
 }
 
-fn print_matrix(size: usize, matrix: Vec<Vec<usize>>) {
+fn input_to_f64() -> f64 {
+    let mut input: String = String::new();
+
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Error at read input");
+
+    let num: f64 = match input.trim().parse() {
+        Ok(value) => value,
+
+        Err(_) => {
+            println!("Please only enter a valid f64");
+            return 0.0;
+        }
+    };
+    num
+}
+
+fn print_matrix(size: usize, matrix: Vec<Vec<f64>>) {
     for row in 0..size {
-        for column in 0..=size{
+        for column in 0..=size {
             print!("{} ", matrix[row][column])
         }
         println!()
     }
 }
 
-fn create_augmented_matrix(size: usize) -> Vec<Vec<usize>> {
+fn create_augmented_matrix(size: usize) -> Vec<Vec<f64>> {
     println!();
     println!("{size}====Please enter the coefficients of your matrix===={size}");
     println!();
 
-    let mut augmented_matrix = vec![vec![0; size+1]; size];
+    let mut augmented_matrix = vec![vec![0.0; size + 1]; size];
 
     for row in 0..size {
-
-        println!("Row: {}", row+1);
+        println!("Row: {}", row + 1);
 
         for column in 0..size {
-            println!("Please enter your component: ({},{}) ", row+1, column+1);
-            println!("({},{})", row, column);
-            let component = input_to_u64();
+            println!("Please enter your component: ({},{}) ", row + 1, column + 1);
+            let component = input_to_f64();
             augmented_matrix[row][column] = component;
         }
 
-        println!("Please enter the constant of your row: {}", row+1);
-        augmented_matrix[row][size] = input_to_u64();
+        println!("Please enter the constant of your row: {}", row + 1);
+        augmented_matrix[row][size] = input_to_f64();
     }
-    
+
     augmented_matrix
+}
+
+fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
+    let n: usize = matrix.len();
+
+    for i in 0..n {
+        // Find the maximum element in the column
+
+        let mut max_row = i;
+
+        for j in i + 1..n {
+            if matrix[j][i] > matrix[max_row][i] {
+                max_row = j;
+            }
+        }
+
+        //Swap rows if necessary to avoid zero divisions
+        if max_row != i {
+            matrix.swap(i, max_row);
+        }
+
+        //Make zeros under the current element
+        for j in i + 1..n {}
+    }
 }
