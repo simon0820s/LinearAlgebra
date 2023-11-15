@@ -5,7 +5,7 @@ fn main() {
     println!("🦀===Please enter the size of your square matrix===🦀");
     let size: usize = input_to_u64();
     let a_matrix = create_augmented_matrix(size);
-    println!("printing");
+    println!("This is your matrix 🦀");
     print_matrix(size, a_matrix)
 }
 
@@ -29,9 +29,10 @@ fn input_to_u64() -> usize {
 
 fn print_matrix(size: usize, matrix: Vec<Vec<usize>>) {
     for row in 0..size {
-        for column in 1..size+1{
-            println!("{}", matrix[row][column])
+        for column in 0..=size{
+            print!("{} ", matrix[row][column])
         }
+        println!()
     }
 }
 
