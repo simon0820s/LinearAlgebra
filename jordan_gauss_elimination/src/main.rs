@@ -1,21 +1,16 @@
 use std::io;
 
 fn main() {
-    let mut initial_matrix: Vec<Vec<f64>> = vec![
-        vec![1.0, 1.0, 2.0, 5.0],
-        vec![1.0, 2.0, 3.0, 20.0],
-        vec![2.0, 4.0, 5.0, 15.0],
-    ];
 
-    //    println!();
-    //    println!("🦀===Please enter the size of your square matrix===🦀");
-    //
-    //    let size: usize = get_size();
-    //    let mut a_matrix = create_augmented_matrix(size);
+    println!();
+    println!("🦀===Please enter the size of your square matrix===🦀");
 
-    //    print_matrix(size, a_matrix);
+    let size: usize = get_size();
+    let a_matrix = create_augmented_matrix(size);
 
-    gaussian_elimination(initial_matrix);
+    print_matrix(size, a_matrix.clone());
+
+    gaussian_elimination(a_matrix);
 }
 
 fn get_size() -> usize {
@@ -87,7 +82,6 @@ fn create_augmented_matrix(size: usize) -> Vec<Vec<f64>> {
 }
 
 fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
-
     //first row
 
     let n = matrix.len();
@@ -118,7 +112,7 @@ fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
 
     for row in 1..n - 1 {
         for column in 1..=n {
-            matrix[row+1][column] = multiple*matrix[row+1][column] - matrix[row][column];
+            matrix[row + 1][column] = multiple * matrix[row + 1][column] - matrix[row][column];
         }
     }
 
@@ -129,9 +123,10 @@ fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
 
     solution[2] = matrix[2][3] / matrix[2][2];
 
-    solution[1] = (matrix[1][3] - solution[2]*matrix[1][2]) / matrix[1][1];
+    solution[1] = (matrix[1][3] - solution[2] * matrix[1][2]) / matrix[1][1];
 
-    solution[0] = (matrix[0][3] - solution[2]*matrix[0][2] - solution[1]*matrix[0][1]) / matrix[0][0];
+    solution[0] =
+        (matrix[0][3] - solution[2] * matrix[0][2] - solution[1] * matrix[0][1]) / matrix[0][0];
 
     println!("{:?}", solution);
 }
