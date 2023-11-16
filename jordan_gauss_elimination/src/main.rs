@@ -7,16 +7,15 @@ fn main() {
         vec![2.0, 4.0, 5.0, 15.0],
     ];
 
-//    println!();
-//    println!("🦀===Please enter the size of your square matrix===🦀");
-//
-//    let size: usize = get_size();
-//    let mut a_matrix = create_augmented_matrix(size);
+    //    println!();
+    //    println!("🦀===Please enter the size of your square matrix===🦀");
+    //
+    //    let size: usize = get_size();
+    //    let mut a_matrix = create_augmented_matrix(size);
 
-//    print_matrix(size, a_matrix);
+    //    print_matrix(size, a_matrix);
 
-    let solution = gaussian_elimination(initial_matrix);
-    println!("{:?}", solution)
+    gaussian_elimination(initial_matrix);
 }
 
 fn get_size() -> usize {
@@ -88,5 +87,43 @@ fn create_augmented_matrix(size: usize) -> Vec<Vec<f64>> {
 }
 
 fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
+
+    //first row
+
+    let n = matrix.len();
+
+    let mut multiple = matrix[0][0] / matrix[1][0];
+
+    for row in 0..n - 2 {
+        for column in 0..=n {
+            matrix[row + 1][column] = multiple * matrix[row][column] - matrix[row + 1][column];
+        }
+    }
+
+    multiple = matrix[0][0] / matrix[2][0];
+
+    println!("{:?}", matrix);
+
+    for row in 0..n - 2 {
+        for column in 0..=n {
+            matrix[row + 2][column] = multiple * matrix[row + 2][column] - matrix[row][column];
+        }
+    }
+
+    println!("{:?}", matrix);
+
+    //second Row
+
+    multiple = matrix[1][1] / matrix[2][1];
+
+    println!("{:?}", multiple);
+
+    for row in 1..n - 1 {
+        for column in 1..=n {
+            matrix[row+1][column] = multiple*matrix[row+1][column] - matrix[row][column];
+        }
+    }
+
+    println!("{:?}", matrix)
 
 }
