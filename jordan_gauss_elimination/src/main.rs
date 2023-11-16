@@ -112,11 +112,9 @@ fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
 
     println!("{:?}", matrix);
 
-    //second Row
+    //Second Row
 
     multiple = matrix[1][1] / matrix[2][1];
-
-    println!("{:?}", multiple);
 
     for row in 1..n - 1 {
         for column in 1..=n {
@@ -124,6 +122,16 @@ fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
         }
     }
 
-    println!("{:?}", matrix)
+    println!("{:?}", matrix);
 
+    //Reverse Solving
+    let mut solution = [0.0; 3];
+
+    solution[2] = matrix[2][3] / matrix[2][2];
+
+    solution[1] = (matrix[1][3] - solution[2]*matrix[1][2]) / matrix[1][1];
+
+    solution[0] = (matrix[0][3] - solution[2]*matrix[0][2] - solution[1]*matrix[0][1]) / matrix[0][0];
+
+    println!("{:?}", solution);
 }
