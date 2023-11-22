@@ -3,20 +3,20 @@ use interact::print_matrix;
 fn main() {
     let matrix: Vec<Vec<f32>> = vec![
         vec![2., 4., 6., 18.],
-        vec![2., 5., 6., 24.],
+        vec![4., 5., 6., 24.],
         vec![3., 1., -2., 4.],
     ];
     let result = jordan_gauss_elimination(matrix);
     println!("{:?}", result)
 }
 
-fn jordan_gauss_elimination(mut matrix: Vec<Vec<f32>>) {
-    let result: Vec<f64>;
+fn jordan_gauss_elimination(mut matrix: Vec<Vec<f32>>) -> Vec<f64> {
+    let mut result = vec![0.0; 3];
 
     let n_r: usize = matrix.len();
     let n_c: usize = matrix[0].len();
 
-    //Make ceros
+    //staggered matrix
 
     for row in 0..n_r - 1 {
         for r in row..n_r - 1 {
@@ -34,6 +34,9 @@ fn jordan_gauss_elimination(mut matrix: Vec<Vec<f32>>) {
         }
         print_matrix(&matrix);
     }
+
+    //backward substitution
+    result
 }
 
 fn round_to(num: f32, decimal_places: usize) -> f32 {
