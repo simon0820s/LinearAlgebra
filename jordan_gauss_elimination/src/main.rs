@@ -1,132 +1,42 @@
-use std::io;
-
+mod interact;
+use interact::print_matrix;
 fn main() {
-
-    println!();
-    println!("🦀===Please enter the size of your square matrix===🦀");
-
-    let size: usize = get_size();
-    let a_matrix = create_augmented_matrix(size);
-
-    print_matrix(size, a_matrix.clone());
-
-    gaussian_elimination(a_matrix);
+    let matrix: Vec<Vec<f32>> = vec![
+        vec![2., 4., 6., 18.],
+        vec![2., 5., 6., 24.],
+        vec![3., 1., -2., 4.],
+    ];
+    let result = jordan_gauss_elimination(matrix);
+    println!("{:?}", result)
 }
 
-fn get_size() -> usize {
-    let mut input: String = String::new();
+fn jordan_gauss_elimination(mut matrix: Vec<Vec<f32>>) {
+    let result: Vec<f64>;
 
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Error at read input");
+    let n_r: usize = matrix.len();
+    let n_c: usize = matrix[0].len();
 
-    let size: usize = match input.trim().parse() {
-        Ok(value) => value,
+    //Make ceros
 
-        Err(_) => {
-            println!("Please only enter a valid u64");
-            return 0;
+    for row in 0..n_r - 1 {
+        for r in row..n_r - 1 {
+            
+            let multiple: f32 = if matrix[r + 1][row] != 0.0 {
+                matrix[row][row] / matrix[r + 1][row]
+            } else {
+                continue;
+            };
+            println!("{}", multiple);
+
+            for c in row..n_c {
+                matrix[r + 1][c] = round_to( multiple * matrix[r + 1][c] - matrix[row][c], 3 )
+            }
         }
-    };
-    size
-}
-
-fn input_to_f64() -> f64 {
-    let mut input: String = String::new();
-
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Error at read input");
-
-    let num: f64 = match input.trim().parse() {
-        Ok(value) => value,
-
-        Err(_) => {
-            println!("Please only enter a valid f64");
-            return 0.0;
-        }
-    };
-    num
-}
-
-fn print_matrix(size: usize, matrix: Vec<Vec<f64>>) {
-    for row in 0..size {
-        for column in 0..=size {
-            print!("{} ", matrix[row][column])
-        }
-        println!()
+        print_matrix(&matrix);
     }
 }
 
-fn create_augmented_matrix(size: usize) -> Vec<Vec<f64>> {
-    println!();
-    println!("{size}====Please enter the coefficients of your matrix===={size}");
-    println!();
-
-    let mut augmented_matrix = vec![vec![0.0; size + 1]; size];
-
-    for row in 0..size {
-        println!("Row: {}", row + 1);
-
-        for column in 0..size {
-            println!("Please enter your component: ({},{}) ", row + 1, column + 1);
-            let component = input_to_f64();
-            augmented_matrix[row][column] = component;
-        }
-
-        println!("Please enter the constant of your row: {}", row + 1);
-        augmented_matrix[row][size] = input_to_f64();
-    }
-
-    augmented_matrix
-}
-
-fn gaussian_elimination(mut matrix: Vec<Vec<f64>>) {
-    //first row
-
-    let n = matrix.len();
-
-    let mut multiple = matrix[0][0] / matrix[1][0];
-
-    for row in 0..n - 2 {
-        for column in 0..=n {
-            matrix[row + 1][column] = multiple * matrix[row][column] - matrix[row + 1][column];
-        }
-    }
-
-    multiple = matrix[0][0] / matrix[2][0];
-
-    println!("{:?}", matrix);
-
-    for row in 0..n - 2 {
-        for column in 0..=n {
-            matrix[row + 2][column] = multiple * matrix[row + 2][column] - matrix[row][column];
-        }
-    }
-
-    println!("{:?}", matrix);
-
-    //Second Row
-
-    multiple = matrix[1][1] / matrix[2][1];
-
-    for row in 1..n - 1 {
-        for column in 1..=n {
-            matrix[row + 1][column] = multiple * matrix[row + 1][column] - matrix[row][column];
-        }
-    }
-
-    println!("{:?}", matrix);
-
-    //Reverse Solving
-    let mut solution = [0.0; 3];
-
-    solution[2] = matrix[2][3] / matrix[2][2];
-
-    solution[1] = (matrix[1][3] - solution[2] * matrix[1][2]) / matrix[1][1];
-
-    solution[0] =
-        (matrix[0][3] - solution[2] * matrix[0][2] - solution[1] * matrix[0][1]) / matrix[0][0];
-
-    println!("{:?}", solution);
+fn round_to(num: f32, decimal_places: usize) -> f32 {
+    let multiplier = 10_f32.powi(decimal_places as i32);
+    (num * multiplier).round() / multiplier
 }
